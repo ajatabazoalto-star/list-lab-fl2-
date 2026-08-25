@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight 2 — Aviation English Listening Lab (Starter Level)</title>
+<style>
+  :root{
+    --navy:#0b1f3a;
+    --navy2:#122a4d;
+    --sky:#1ea7e8;
+    --amber:#f5a623;
+    --green:#28c76f;
+    --red:#ea5455;
+    --purple:#8e6ef2;
+    --ink:#122036;
+    --paper:#f4f8fc;
+    --card:#ffffff;
+    --muted:#6b7c93;
+    --radius:16px;
+    --shadow:0 8px 24px rgba(11,31,58,0.12);
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);}
+  body{min-height:100vh;}
+
+  header.topbar{
+    background:linear-gradient(135deg,var(--navy) 0%, var(--navy2) 100%);
+    color:#fff;padding:16px 18px 12px;position:sticky;top:0;z-index:50;
+    box-shadow:0 4px 18px rgba(0,0,0,.25);
+  }
+  .topbar-inner{max-width:1150px;margin:0 auto;}
+  .badge{
+    display:inline-block;background:var(--sky);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:1px;padding:5px 12px;border-radius:20px;text-transform:uppercase;margin-bottom:8px;
+  }
+  header.topbar h1{margin:0 0 4px;font-size:clamp(18px,3.6vw,26px);}
+  header.topbar p{margin:0 0 12px;color:#b9c8de;font-size:13px;}
+
+  nav.phasenav{display:flex;gap:6px;flex-wrap:wrap;}
+  nav.phasenav button{
+    flex:1 1 100px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+    color:#dce6f5;padding:8px 6px;border-radius:10px;font-size:11.5px;font-weight:600;cursor:pointer;
+    transition:.2s;text-align:center;
+  }
+  nav.phasenav button .num{display:block;font-size:9.5px;font-weight:800;color:var(--amber);letter-spacing:1px;margin-bottom:2px;}
+  nav.phasenav button.active{background:var(--sky);border-color:var(--sky);color:#fff;}
+  nav.phasenav button:hover:not(.active){background:rgba(255,255,255,0.16);}
+
+  .progress-outer{height:6px;background:rgba(255,255,255,0.15);border-radius:6px;margin-top:10px;overflow:hidden;}
+  .progress-inner{height:100%;width:0%;background:linear-gradient(90deg,var(--sky),var(--amber));transition:width .4s ease;}
+
+  main{max-width:1150px;margin:0 auto;padding:26px 18px 70px;}
+  .phase{display:none;animation:fadeIn .4s ease;}
+  .phase.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .phase-title{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .phase-title .bar{width:5px;height:26px;background:var(--sky);border-radius:3px;}
+  .phase-title h2{margin:0;font-size:clamp(19px,3.2vw,25px);}
+  .phase-sub{color:var(--muted);margin:0 0 22px;font-size:14.5px;max-width:760px;}
+
+  .lab-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 22px;margin-bottom:20px;}
+  .audio-player-box{
+    background:#eef4fb;border-left:5px solid var(--sky);padding:16px 20px;border-radius:10px;
+    display:flex;align-items:center;gap:16px;margin-bottom:24px;
+  }
+  .audio-play-btn{
+    width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;border:none;
+    font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:.2s;flex-shrink:0;box-shadow:0 4px 12px rgba(11,31,58,0.2);
+  }
+  .audio-play-btn:hover{background:var(--sky);transform:scale(1.05);}
+  .audio-info{flex:1;}
+  .audio-info h4{margin:0 0 4px;font-size:15px;color:var(--navy);}
+  .audio-info p{margin:0;font-size:12.5px;color:var(--muted);}
+
+  .question-block{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #eef4fb;}
+  .question-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:12px;}
+  
+  .opt-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  .opt-btn{
+    background:#f7fafd;border:2px solid #e2ebf3;border-radius:12px;padding:12px 16px;
+    font-size:14px;font-weight:600;color:var(--ink);text-align:left;cursor:pointer;transition:.15s;
+    display:flex;align-items:center;gap:10px;
+  }
+  .opt-btn:hover{border-color:var(--sky);background:#fff;}
+  .opt-btn.correct{background:#e8f9ee;border-color:var(--green);color:#1c8a4d;}
+  .opt-btn.wrong{background:#fdecec;border-color:var(--red);color:#c53030;}
+
+  .fb-gap-sentence{font-size:16px;font-weight:600;line-height:1.8;color:var(--navy);background:#f7fafd;padding:16px;border-radius:12px;margin-bottom:16px;}
+  .fb-gap-sentence select{
+    font-size:14.5px;font-weight:700;padding:6px 10px;border-radius:8px;border:2px solid var(--sky);
+    background:#fff;color:var(--navy);outline:none;margin:0 4px;
+  }
+
+  .final-wrap{max-width:700px;margin:0 auto;text-align:center;}
+  .final-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:40px 26px;}
+  .medal{font-size:80px;margin-bottom:6px;}
+  .final-card h3{font-size:26px;color:var(--navy);margin:0 0 4px;}
+  .final-card .medal-label{font-weight:800;color:var(--amber);text-transform:uppercase;letter-spacing:1px;font-size:13px;margin-bottom:18px;}
+  .final-score-big{font-size:52px;font-weight:900;color:var(--sky);margin-bottom:4px;}
+  .final-score-sub{color:var(--muted);font-size:13px;margin-bottom:26px;}
+  .final-breakdown{display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:26px;}
+  .fb-row{display:flex;align-items:center;gap:12px;}
+  .fb-row .fb-label{width:180px;font-size:13px;font-weight:700;color:var(--ink);flex-shrink:0;}
+  .fb-row .fb-bar-outer{flex:1;height:10px;background:#e2ebf3;border-radius:6px;overflow:hidden;}
+  .fb-row .fb-bar-inner{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:6px;}
+  .fb-row .fb-val{width:52px;text-align:right;font-size:12.5px;font-weight:800;color:var(--muted);}
+  .restart-btn{background:var(--amber);border:none;color:#3a2600;padding:13px 26px;border-radius:10px;font-weight:800;cursor:pointer;font-size:14.5px;}
+
+  footer.bottom{text-align:center;color:var(--muted);font-size:12px;padding:20px;}
+  footer.bottom span{color:var(--sky);font-weight:700;}
+
+  @media(max-width:640px){
+    nav.phasenav{gap:5px;}
+    nav.phasenav button{font-size:10px;padding:7px 4px;}
+    .fb-row .fb-label{width:120px;font-size:11px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="badge">Aviation English Program · Flight 2</span>
+    <h1>Flight 2 — Simple Present &amp; Existentials Lab</h1>
+    <p>Aviation Starter Guide: Key Nouns, Ramp Verbs, There is / There are &amp; Daily Routines</p>
+    <nav class="phasenav" id="phaseNav">
+      <button class="phase-btn active" data-phase="1"><span class="num">SECTION 1</span>Key Vocab</button>
+      <button class="phase-btn" data-phase="2"><span class="num">SECTION 2</span>Ramp Verbs</button>
+      <button class="phase-btn" data-phase="3"><span class="num">SECTION 3</span>Existentials</button>
+      <button class="phase-btn" data-phase="4"><span class="num">SECTION 4</span>Routines</button>
+      <button class="phase-btn" data-phase="5"><span class="num">SECTION 5</span>Simulator</button>
+      <button class="phase-btn" data-phase="6"><span class="num">SECTION 6</span>Final Review</button>
+    </nav>
+    <div class="progress-outer"><div class="progress-inner" id="topProgress"></div></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= SECTION 1 ================= -->
+  <section class="phase active" id="phase1">
+    <div class="phase-title"><span class="bar"></span><h2>Section 1: 5 Core Aviation Nouns</h2></div>
+    <p class="phase-sub">Listen to the descriptions of basic operational objects and identify the correct vocabulary item.</p>
+    
+    <div class="lab-card">
+      <div class="audio-player-box">
+        <button class="audio-play-btn" onclick="playAudio('s1')">🔊</button>
+        <div class="audio-info">
+          <h4>Essential Airport Equipment</h4>
+          <p>Duration: ~40 secs | Listen and select the correct items</p>
+        </div>
+      </div>
+
+      <div class="question-block" id="s1q1">
+        <div class="q-text">1. Which equipment is located inside the cockpit for pilot communication?</div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s1q1', this, false)">a) Gate</button>
+          <button class="opt-btn" onclick="checkMCQ('s1q1', this, true)">b) Headset</button>
+          <button class="opt-btn" onclick="checkMCQ('s1q1', this, false)">c) Cargo Hold</button>
+        </div>
+      </div>
+
+      <div class="question-block" id="s1q2">
+        <div class="q-text">2. Where is passenger baggage loaded inside the aircraft?</div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s1q2', this, false)">a) Seatbelt</button>
+          <button class="opt-btn" onclick="checkMCQ('s1q2', this, false)">b) Ramp</button>
+          <button class="opt-btn" onclick="checkMCQ('s1q2', this, true)">c) Cargo Hold</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">3. Complete the operational statements:</div>
+        <div class="fb-gap-sentence">
+          "Passengers board the aircraft at the 
+          <select id="s1gap1" onchange="checkGap('s1gap1', 'gate')">
+            <option value="">-- select --</option>
+            <option value="gate">gate</option>
+            <option value="headset">headset</option>
+          </select> and fasten their 
+          <select id="s1gap2" onchange="checkGap('s1gap2', 'seatbelt')">
+            <option value="">-- select --</option>
+            <option value="ramp">ramp</option>
+            <option value="seatbelt">seatbelt</option>
+          </select> in the cabin."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 ================= -->
+  <section class="phase" id="phase2">
+    <div class="phase-title"><span class="bar"></span><h2>Section 2: Aviation Action Verbs</h2></div>
+    <p class="phase-sub">Listen to the ground crew instructions and select the correct action being performed.</p>
+    
+    <div class="lab-card">
+      <div class="audio-player-box">
+        <button class="audio-play-btn" onclick="playAudio('s2')">🔊</button>
+        <div class="audio-info">
+          <h4>Ramp &amp; Cabin Actions</h4>
+          <p>Duration: ~40 secs | Verbs: Fasten, Park, Load, Verify, Announce</p>
+        </div>
+      </div>
+
+      <div class="question-block" id="s2q1">
+        <div class="q-text">1. What action does the mechanic perform on the aircraft upon arrival?</div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s2q1', this, true)">a) Parks the airplane on the ramp</button>
+          <button class="opt-btn" onclick="checkMCQ('s2q1', this, false)">b) Fastens the seatbelt in the cabin</button>
+          <button class="opt-btn" onclick="checkMCQ('s2q1', this, false)">c) Announces safety instructions</button>
+        </div>
+      </div>
+
+      <div class="question-block" id="s2q2">
+        <div class="q-text">2. What action do dispatchers perform with the bags?</div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s2q2', this, false)">a) They verify the headset.</button>
+          <button class="opt-btn" onclick="checkMCQ('s2q2', this, true)">b) They load bags into the cargo hold.</button>
+          <button class="opt-btn" onclick="checkMCQ('s2q2', this, false)">c) They park the aircraft at the gate.</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 ================= -->
+  <section class="phase" id="phase3">
+    <div class="phase-title"><span class="bar"></span><h2>Section 3: Existentials (There is vs. There are)</h2></div>
+    <p class="phase-sub">Listen to the ramp report and select the correct singular or plural existential form.</p>
+
+    <div class="lab-card">
+      <div class="audio-player-box">
+        <button class="audio-play-btn" onclick="playAudio('s3')">🔊</button>
+        <div class="audio-info">
+          <h4>Ramp Observation Report</h4>
+          <p>Duration: ~45 secs | Focus on Singular (There is) vs Plural (There are)</p>
+        </div>
+      </div>
+
+      <div class="question-block" id="s3q1">
+        <div class="q-text">1. Fill in the blank: <em>"__________ five passengers at Gate 12."</em></div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s3q1', this, false)">a) There is</button>
+          <button class="opt-btn" onclick="checkMCQ('s3q1', this, true)">b) There are</button>
+        </div>
+      </div>
+
+      <div class="question-block" id="s3q2">
+        <div class="q-text">2. Fill in the blank: <em>"__________ a baggage bag on the ramp."</em></div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s3q2', this, true)">a) There is</button>
+          <button class="opt-btn" onclick="checkMCQ('s3q2', this, false)">b) There are</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 ================= -->
+  <section class="phase" id="phase4">
+    <div class="phase-title"><span class="bar"></span><h2>Section 4: Simple Present Grammar Rules</h2></div>
+    <p class="phase-sub">Listen to operational routines and choose the correct affirmative, negative, or question structure.</p>
+
+    <div class="lab-card">
+      <div class="audio-player-box">
+        <button class="audio-play-btn" onclick="playAudio('s4')">🔊</button>
+        <div class="audio-info">
+          <h4>Daily Flight Operations &amp; Rules</h4>
+          <p>Duration: ~50 secs | Focus on -s/es, don't/doesn't, Do/Does</p>
+        </div>
+      </div>
+
+      <div class="question-block" id="s4q1">
+        <div class="q-text">1. Affirmative Rule: <em>"The pilot __________ his seatbelt in the cockpit."</em></div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s4q1', this, false)">a) fasten</button>
+          <button class="opt-btn" onclick="checkMCQ('s4q1', this, true)">b) fastens</button>
+        </div>
+      </div>
+
+      <div class="question-block" id="s4q2">
+        <div class="q-text">2. Negative Auxiliary: <em>"The dispatchers __________ load the bags into the cargo hold."</em></div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s4q2', this, true)">a) do not</button>
+          <button class="opt-btn" onclick="checkMCQ('s4q2', this, false)">b) does not</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 ================= -->
+  <section class="phase" id="phase5">
+    <div class="phase-title"><span class="bar"></span><h2>Section 5: Ramp &amp; Cockpit Dialogue Simulator</h2></div>
+    <p class="phase-sub">Listen to the complete operational exchange and verify true/false statements.</p>
+
+    <div class="lab-card">
+      <div class="audio-player-box">
+        <button class="audio-play-btn" onclick="playAudio('s5')">🔊</button>
+        <div class="audio-info">
+          <h4>Standard Aviation Exchange</h4>
+          <p>Duration: ~1.0 min | Full Operational Dialogue</p>
+        </div>
+      </div>
+
+      <div class="question-block" id="s5q1">
+        <div class="q-text">1. What does Tower instruct the ground crew to do after being alerted about passenger bags at the gate?</div>
+        <div class="opt-grid">
+          <button class="opt-btn" onclick="checkMCQ('s5q1', this, false)">a) Leave them at Gate 12.</button>
+          <button class="opt-btn" onclick="checkMCQ('s5q1', this, true)">b) "Roger, load them."</button>
+          <button class="opt-btn" onclick="checkMCQ('s5q1', this, false)">c) Cancel the flight brief.</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-text">2. True or False Evaluation based on the Dialogue:</div>
+        
+        <div style="margin-bottom:12px;">
+          <p style="font-size:14px;margin:0 0 6px;">a) <em>"The ground marshaller parks heavy aircraft on stand 3."</em></p>
+          <button class="opt-btn" id="s5tf1_f" onclick="checkTF('s5tf1', false, 'F')" style="display:inline-block;padding:6px 16px;">False</button>
+          <button class="opt-btn" id="s5tf1_t" onclick="checkTF('s5tf1', true, 'F')" style="display:inline-block;padding:6px 16px;">True</button>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <p style="font-size:14px;margin:0 0 6px;">b) <em>"The flight attendant always announces the safety brief."</em></p>
+          <button class="opt-btn" id="s5tf2_t" onclick="checkTF('s5tf2', true, 'T')" style="display:inline-block;padding:6px 16px;">True</button>
+          <button class="opt-btn" id="s5tf2_f" onclick="checkTF('s5tf2', false, 'T')" style="display:inline-block;padding:6px 16px;">False</button>
+        </div>
+
+        <div>
+          <p style="font-size:14px;margin:0 0 6px;">c) <em>"Pilots verify fuel levels before every flight."</em></p>
+          <button class="opt-btn" id="s5tf3_t" onclick="checkTF('s5tf3', true, 'T')" style="display:inline-block;padding:6px 16px;">True</button>
+          <button class="opt-btn" id="s5tf3_f" onclick="checkTF('s5tf3', false, 'T')" style="display:inline-block;padding:6px 16px;">False</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 ================= -->
+  <section class="phase" id="phase6">
+    <div class="phase-title"><span class="bar"></span><h2>Final Review &amp; Operational Summary</h2></div>
+    <p class="phase-sub">Comprehensive evaluation of your performance in Flight 2.</p>
+    <div class="final-wrap" id="finalArea"></div>
+  </section>
+
+</main>
+
+<footer class="bottom">✈️ Flight 2 Listening Lab · <span>Starter Aviation English Completed</span></footer>
+
+<script>
+/* AUDIO SYNTHESIS DIALOGUES (FLIGHT 2 CONTENT) */
+const AUDIOS = {
+  s1: "Welcome to Flight 2. Let us review the key nouns. Passengers board at the gate. The pilot wears a headset in the cockpit. Luggage is stored in the cargo hold. Passengers fasten their seatbelt on the ramp.",
+  s2: "Ground operational verbs: The mechanic parks the airplane on the ramp. Dispatchers load bags into the cargo hold. Flight attendants announce safety protocols. Pilots verify cabin indicators.",
+  s3: "Ramp status report: Tower, there is a pilot in the cockpit. There is a baggage bag on the ramp. There are passengers at the gate, and there are seatbelts in the cabin.",
+  s4: "Grammar in flight operations: Pilots verify the flight plan. The pilot fastens his seatbelt. The ground marshaller does not park heavy aircraft on stand 3. Do you verify fuel levels before every flight?",
+  s5: "Operational exchange: Ground reports: Tower, there are passenger bags at the gate. Tower replies: Roger, load them. The flight attendant always announces the safety brief. Does the crew verify the fuel levels before every flight? Affirmative."
+};
+
+/* SOUND EFFECTS */
+let audioCtx;
+function getCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playDing(){
+  try{
+    const ctx = getCtx();
+    const notes = [880, 1320];
+    notes.forEach((freq, i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const start = ctx.currentTime + i*0.09;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.25, start+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start+0.25);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start+0.28);
+    });
+  }catch(e){}
+}
+function playBuzz(){
+  try{
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.value = 130;
+    const start = ctx.currentTime;
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.2, start+0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start+0.35);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(start);
+    osc.stop(start+0.38);
+  }catch(e){}
+}
+
+/* AUDIO SYNTHESIS WITH BEST VOICE DETECTION */
+function playAudio(key){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  
+  const u = new SpeechSynthesisUtterance(AUDIOS[key]);
+  u.lang = 'en-US';
+  u.rate = 0.85; // Slightly slower speed for basic level
+
+  const voices = window.speechSynthesis.getVoices();
+  const bestVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Online'))) ||
+                    voices.find(v => v.lang.startsWith('en'));
+
+  if (bestVoice) {
+    u.voice = bestVoice;
+  }
+
+  window.speechSynthesis.speak(u);
+}
+
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
+}
+
+/* SCORES AND TRACKING */
+const scores = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0 };
+const maxScores = { s1: 4, s2: 2, s3: 2, s4: 2, s5: 4 };
+
+function checkMCQ(blockId, btn, isCorrect){
+  const block = document.getElementById(blockId);
+  const btns = block.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  
+  const secKey = blockId.substring(0, 2);
+  if(isCorrect){
+    btn.classList.add('correct');
+    scores[secKey]++;
+    playDing();
+  } else {
+    btn.classList.add('wrong');
+    playBuzz();
+  }
+}
+
+function checkGap(selectId, correctVal){
+  const sel = document.getElementById(selectId);
+  if(sel.value === correctVal){
+    sel.style.borderColor = 'var(--green)';
+    sel.style.background = '#e8f9ee';
+    scores.s1 += 0.5;
+    playDing();
+  } else {
+    sel.style.borderColor = 'var(--red)';
+    sel.style.background = '#fdecec';
+    playBuzz();
+  }
+  sel.disabled = true;
+}
+
+function checkTF(tfId, userChoice, correctChoice){
+  const isCorrect = (userChoice && correctChoice === 'T') || (!userChoice && correctChoice === 'F');
+  const btnT = document.getElementById(tfId + '_t');
+  const btnF = document.getElementById(tfId + '_f');
+  if(btnT) btnT.style.pointerEvents = 'none';
+  if(btnF) btnF.style.pointerEvents = 'none';
+
+  if(isCorrect){
+    scores.s5++;
+    playDing();
+    if(userChoice && btnT) btnT.classList.add('correct');
+    if(!userChoice && btnF) btnF.classList.add('correct');
+  } else {
+    playBuzz();
+    if(userChoice && btnT) btnT.classList.add('wrong');
+    if(!userChoice && btnF) btnF.classList.add('wrong');
+  }
+}
+
+/* NAVIGATION */
+const phaseBtns = document.querySelectorAll('.phase-btn');
+const phases = document.querySelectorAll('.phase');
+
+function goToPhase(n){
+  phases.forEach(p => p.classList.remove('active'));
+  phaseBtns.forEach(b => b.classList.remove('active'));
+  document.getElementById('phase'+n).classList.add('active');
+  document.querySelector(`.phase-btn[data-phase="${n}"]`).classList.add('active');
+  document.getElementById('topProgress').style.width = (n/6*100)+'%';
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(n == 6) renderFinalReview();
+}
+phaseBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=> goToPhase(btn.dataset.phase));
+});
+
+/* FINAL REVIEW */
+function renderFinalReview(){
+  const total = scores.s1 + scores.s2 + scores.s3 + scores.s4 + scores.s5;
+  const maxTotal = 14;
+  const pct = Math.round((total/maxTotal)*100);
+
+  let medal = '🥉', label = 'Junior Ground Trainee';
+  if(pct >= 90){ medal = '🥇'; label = 'Flight 2 Ready for Taxi — Master Wings!'; }
+  else if(pct >= 70){ medal = '🥈'; label = 'Ramp & Cabin Specialist!'; }
+
+  const rows = [
+    {label:'1. Key Vocab', val:scores.s1, max:maxScores.s1},
+    {label:'2. Ramp Verbs', val:scores.s2, max:maxScores.s2},
+    {label:'3. Existentials', val:scores.s3, max:maxScores.s3},
+    {label:'4. Daily Routines', val:scores.s4, max:maxScores.s4},
+    {label:'5. Dialogue Simulator', val:scores.s5, max:maxScores.s5},
+  ];
+
+  document.getElementById('finalArea').innerHTML = `
+    <div class="final-card">
+      <div class="medal">${medal}</div>
+      <h3>Flight 2 Listening Lab Complete!</h3>
+      <div class="medal-label">${label}</div>
+      <div class="final-score-big">${pct}%</div>
+      <div class="final-score-sub">${total} / ${maxTotal} points total</div>
+      <div class="final-breakdown">
+        ${rows.map(r => `
+          <div class="fb-row">
+            <div class="fb-label">${r.label}</div>
+            <div class="fb-bar-outer"><div class="fb-bar-inner" style="width:${(r.val/r.max*100)}%;"></div></div>
+            <div class="fb-val">${r.val}/${r.max}</div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="restart-btn" onclick="location.reload()">✈️ Restart Session</button>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
